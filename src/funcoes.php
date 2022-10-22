@@ -15,7 +15,15 @@ class Funcoes
 
      * */
     public function SeculoAno(int $ano): int {
-        
+        //compara o quociente de divisão inteira
+        //se for zero, o ano está no seculo dos seus primeiros digitos atraves de ano/100
+        if($ano%100 == 0){
+            return intdiv($ano, 100);
+        }
+        //Se não for zero, significa que já está no seculo seguinte ao seus primeiros dígitos
+        else{
+            return intdiv($ano, 100)+1;
+        }
     }
 
     
@@ -36,8 +44,28 @@ class Funcoes
     Número = 29 resposta = 23
 
      * */
+    function EPrimo(int $numero){
+        //Função que vai determinar se é um número primo comparando o quociente inteiro da divisão do número
+        //por seus antecessores
+        for ($a=2; $a < $numero; $a++){
+            
+            if($numero % $a == 0){
+                return false;
+            }
+        }
+        return true;
+    }
     public function PrimoAnterior(int $numero): int {
-        
+        //Vai iterar os números anteriores para descobrir o primo mais próximo
+        for($numero = $numero -1; $numero>0; $numero--){
+            
+            if(EPrimo($numero) == true){
+    
+                return $numero;
+            }
+            
+            
+        }
     }
 
 
@@ -66,7 +94,26 @@ class Funcoes
 
      * */
     public function SegundoMaior(array $arr): int {
+        //Inicialização com o menor número possível na linguagem
+        $primeiro = PHP_INT_MIN;
+        $segundo = PHP_INT_MIN;
         
+        for($i = 0; $i < count($arr); $i++ ){
+            
+            foreach($arr[$i] as $num){
+                if($num > $primeiro){
+                    //Passa para o segundo maior quando encontra um maior que ele mesmo
+                    $segundo = $primeiro;
+                    $primeiro = $num;
+                }
+    
+                if ($num > $segundo && $num < $primeiro){
+                    $segundo = $num;
+                }
+            }
+        }
+        return $segundo;
+            
     }
 	
 	
@@ -105,8 +152,28 @@ class Funcoes
     [3, 5, 67, 98, 3] true
 
      * */
-    
+
+
 	public function SequenciaCrescente(array $arr): boolean {
-        
+        //Já direciona para o caso de array com apenas 1 item retornar true
+        if(count($arr) > 1){
+
+            for($i = 0; $i < count($arr)-1; $i++){
+                //Compara o atual com o próximo para acompanhar quebra no crescimento
+                if($arr[$i] >= $arr[$i+1]){
+                    array_splice($arr, $i, 1);
+                    //Quando encontra a quebra de padrão, remove o componente atual e tenta novamente
+                    for($j = 0; $j < count($arr)-1; $j++){
+                        //Se encontrar outra quebra de padrão, retorna falso pois iria requer mais de uma retirada
+                        if($arr[$j] >= $arr[$j+1]){
+                            return false;
+                        }
+                    }
+                    
+                } 
+            }
+        }
+        //Se não tiver mais de uma quebra de padrão, a função resulta true
+        return true;
     }
 }
